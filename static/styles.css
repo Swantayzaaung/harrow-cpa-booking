@@ -1,0 +1,30 @@
+:root {
+    --lightgrey: #EDEDED;
+    --darkblue: #031643;
+}
+.bg-lightgrey {
+    background-color: var(--lightgrey);
+}
+
+.bg-blue {
+    background-color: var(--darkblue);
+}
+.border-blue {
+    border: var(--darkblue) 3px solid !important;
+}
+
+.nav-item {
+    margin: 0 2rem 0 2rem;
+}
+
+.booking-item {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+    .booking-item {
+        width: 40%;
+        margin: 1rem;
+    } 
+}
