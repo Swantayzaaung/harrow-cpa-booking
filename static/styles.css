@@ -22,9 +22,31 @@
     margin-bottom: 1rem;
 }
 
+.invalid-feedback {
+    font-size: 0.75em;
+    color: red;
+}
+
+.is-invalid {
+    border-color: red;
+    border-radius: 0.1em;
+}
+
+.form-field {
+    margin: 0px 0px;
+}
+
+.reg-form {
+    width: 100%;
+    margin: auto;
+}
+
 @media screen and (min-width: 600px) {
     .booking-item {
         width: 40%;
         margin: 1rem;
     } 
+    .reg-form {
+        width: 50%;
+    }
 }

@@ -1,1 +1,5 @@
 Flask
+flask-ngrok
+Flask-SQLAlchemy
+Flask-WTF
+WTForms
