@@ -38,3 +38,11 @@ def validate_email(self, email): # verifying email
 
     if user: # there is a user that already has that email
       raise ValidationError("An account with this email already exists. Please use another email.")
+
+class BookingForm(FlaskForm):
+    # date, no people, time slot
+    date = StringField("Date", validators=[DataRequired()])
+
+    no_people = SelectField("No. People", choices=[], validators=[DataRequired()])
+
+    time_slot = SelectField("Time Slot", choices=["Before School", "Break Time", "Lunch", "3-4pm", "4-5pm"], validators=[DataRequired()])

@@ -40,13 +40,14 @@
     </div>
     <div class="booking-item me-auto">
         <h3>2. Rooms available</h3>
-        <div class="border-blue p-4 bg-white">
-            <div class="btn btn-light border w-100 m-1">A101a</div>
-            <div class="btn btn-light border w-100 m-1">A101a</div>
-            <div class="btn btn-light border w-100 m-1">A101a</div>
-            <div class="btn btn-light border w-100 m-1">A101a</div>
-            <div class="btn btn-light border w-100 m-1">A101a</div>
+        <div class="border-blue p-4 bg-white" role="group" id="rooms-available">
+            {% for room in rooms %}
+                <!-- <input type="radio" class="btn-check" name="RID" id="{{ room }}" autocomplete="off"> -->
+                <button class="room-btn btn btn-outline-primary" for="{{ room }}" data-bs-toggle="modal" data-bs-target="#exampleModal">{{ room }}</button>
+            {% endfor %}
         </div>
     </div>
 </div>
+{% include "modal.html" %}
+<script src="/static/script.js"></script>
 {% endblock %}

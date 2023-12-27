@@ -5,8 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, BookingForm
 from flask_login import LoginManager, current_user, login_user, logout_user
+
+ROOMS = ['A101','A102','A103','A104','A105','A106','A107','A108','A109','A110',
+         'A201','A202','A203','A204','A205','A206','A207','A208','A209','A220']
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
@@ -24,7 +28,9 @@ from models import User, Bookings
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html", name=request.args.get("name", "world"))
+    available_rooms = ROOMS
+    # Do some logic to display the available rooms
+    return render_template("index.html", rooms=available_rooms)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -89,6 +95,11 @@ def logout():
 @app.route('/layoutt')
 def layoutt():
     return render_template("layout.html")
+
+@app.route('/bookings')
+def bookingss():
+    form = BookingForm()
+    return render_template('booking.html', form=form)
 
 
 # Run the flask server on the local network

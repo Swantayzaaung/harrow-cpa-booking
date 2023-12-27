@@ -41,6 +41,15 @@
     margin: auto;
 }
 
+#rooms-available {
+    height: 25rem;
+    overflow: scroll;
+}
+
+.room-btn {
+    width: 40%
+}
+
 @media screen and (min-width: 600px) {
     .booking-item {
         width: 40%;
