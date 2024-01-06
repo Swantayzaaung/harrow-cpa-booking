@@ -6,24 +6,17 @@ $(document).ready(function() {
     $('.room-btn').click(function() {
         // get room number
         let room_id = this.innerHTML;
-        console.log(this, room_id);
-        // modify modal content
-        // room number, date, time slot, no people
+
+        // MODIFY MODAL CONTENT
+        // insert room id
         let rid_disp = document.getElementById("room_id");
-        console.log(rid_disp)
-        // rid_disp.value = room_id;
         rid_disp.setAttribute('value', room_id);
         rid_disp.setAttribute('readonly', true);
-        // rid_disp.setAttribute('value', room_id);
 
+        // insert date
         let date_disp = document.getElementById("date"); // get the date from the calendar somehow
-        // date_disp.value = "14th December 2023";
-        date_disp.setAttribute('value', "14th Decemeber 2023");
+        date_disp.setAttribute('value', "14-12-2023");
         date_disp.setAttribute('readonly', true);
-        // date_disp.setAttribute('value', "14th December 2023");
-        // let timeslot_disp = document.getElementById("timeslot");
-
-        // rid_disp.innerHTML = room_id
     });
 
     // $('.date-selector').click(function() {

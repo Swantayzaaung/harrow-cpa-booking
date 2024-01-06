@@ -8,7 +8,7 @@
         <div id="login-form-email" class="mb-1"> <!-- EMAIL -->
             {{ form.email.label(class="form-label") }} <br>
             {% if form.email.errors %}
-                {{ form.email(class="form-field is-invalid") }}
+                {{ form.email(class="form-field is-invalid form-control") }}
                 <div class="invalid-feedback">
                     {% for error in form.email.errors %}
                         <span style="color:red;"> {{ error }}</span>

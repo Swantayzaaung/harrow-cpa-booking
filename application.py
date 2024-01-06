@@ -7,6 +7,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 from forms import LoginForm, RegisterForm, BookingForm
 from flask_login import LoginManager, current_user, login_user, logout_user
+from datetime import datetime
 
 ROOMS = ['A101','A102','A103','A104','A105','A106','A107','A108','A109','A110',
          'A201','A202','A203','A204','A205','A206','A207','A208','A209','A220']
@@ -48,7 +49,6 @@ def register():
         year = form.year.data
         house = form.house.data
         tutor_group = house + str(year) 
-        print(tutor_group)
         
         # hash email and password
         password_hash = generate_password_hash(password)
@@ -60,7 +60,8 @@ def register():
         db.session.commit()
 
         flash("Account created. Please login with your credentials.", 'success')
-        return redirect(url_for('login'))
+        login_user(new_user)
+        return redirect(url_for('index'))
 
     return render_template("register.html", title="Sign Up", form=form)
 
@@ -78,16 +79,17 @@ def login():
         # do verification checks here
         if user and check_password_hash(user.password, form.password.data): # change the bcrypt stuff to your hash module thing
             login_user(user)
+            flash('Successfully logged in', category='success')
             return redirect(url_for('index'))
         else:
             flash('Your email or password is incorrect.', 'danger')
-        print("login")
     return render_template("login.html", title="Login", form=form)
 
 @app.route("/logout")
 def logout():
     logout_user()
     # Redirect user to login form
+    flash('Successfully logged out', category='success')
     return redirect(url_for("index"))
 
 @app.route('/layoutt')
@@ -100,19 +102,22 @@ def book():
         room_id = request.form.get("room_id")
         num_people = request.form.get("num_people")
         timeslot = request.form.get("timeslot")
-        date = request.form.get("date")
-        booking_records = Bookings.query.filter_by(rid=room_id, date=date, time_slot=timeslot).all()
+        date = datetime.strptime(request.form.get("date"), '%d-%m-%Y')
+        booking_records = Bookings.query.filter_by(rid=room_id, date=date, time_slot=timeslot).first()
+        print(booking_records)
         if not booking_records:
             booking = Bookings(rid=room_id, uid=current_user.id, date=date, num_people=num_people, time_slot=timeslot)
+            print(booking)
             db.session.add(booking) 
             db.session.commit()
+            flash(f"Successfully booked Room {room_id} at time slot {timeslot} on {date}", category="success")
         else:
-            pass
             # send a message to user saying there is a booking already
+            flash("There is already a booking.", category="danger")
+    else:
+        flash("You need to login first.", category="warning")
     return redirect(url_for("index"))
         
-
-
 # Run the flask server on the local network
 # Run the flask server on the local network
 # Run the flask server on the local network

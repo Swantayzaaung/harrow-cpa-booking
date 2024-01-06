@@ -26,7 +26,7 @@ class Bookings(db.Model):
     time_slot= db.Column(db.String, nullable=False)
     
     def __repr__(self):
-        return f"({self.rid}, {self.uid}, {self.date}, {self.time_slot})"
+        return f"({self.id}, {self.rid}, {self.uid}, {self.date}, {self.time_slot})"
 
 # class Rooms(db.Model):
 #     rid = db.Column(db.String(4), primary_key=True)

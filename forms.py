@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
+# from models import User
 
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
@@ -24,7 +25,7 @@ class RegisterForm(FlaskForm):
   
   house = SelectField(u'House', choices=[("B", "Byron"), ("C", "Churchill"), ("K", "Keller"), ("N", "Nehru"), ("So", "Sonakul"), ("S", "Suriyothai")], validators=[DataRequired()])
 
-  year = SelectField(u'Year group', choices=[(i, i) for i in range(1, 13)], validators=[DataRequired()])
+  year = SelectField(u'Year group', choices=[(i, i) for i in range(6, 13)], validators=[DataRequired()])
 
   password = PasswordField("Password", validators=[DataRequired()])
   
