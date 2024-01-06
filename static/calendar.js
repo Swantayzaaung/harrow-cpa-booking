@@ -71,6 +71,8 @@ const generateCalendar = (month, year) => {
 
         if (i >= first_day.getDay()) {
             day.innerHTML = i - first_day.getDay() + 1;
+            // added by mat taylor (can delete when needed)
+            day.classList.add("date-selector");
 
             if (
                 i - first_day.getDay() + 1 === currentDate.getDate() &&
@@ -79,6 +81,8 @@ const generateCalendar = (month, year) => {
             ) {
                 day.classList.add("current-date");
             }
+            
+            
         }
         calendar_days.appendChild(day);
     }

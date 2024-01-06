@@ -31,7 +31,7 @@
             <div class="dropdown">
                 {% if current_user.is_authenticated %}
                 <button class="btn btn-dark bg-transparent dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-user"></i> &nbsp;Swan
+                    <i class="fa-solid fa-user"></i> &nbsp; {{ current_user.username }}
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="{{ url_for('logout') }}">Log out</a></li>

@@ -30,7 +30,7 @@ from models import User, Bookings
 def index():
     available_rooms = ROOMS
     # Do some logic to display the available rooms
-    return render_template("index.html", rooms=available_rooms)
+    return render_template("index.html", rooms=available_rooms, title="Home")
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -84,8 +84,6 @@ def login():
         print("login")
     return render_template("login.html", title="Login", form=form)
 
-
-
 @app.route("/logout")
 def logout():
     logout_user()
@@ -96,14 +94,27 @@ def logout():
 def layoutt():
     return render_template("layout.html")
 
-@app.route('/bookings')
-def bookingss():
-    form = BookingForm()
-    return render_template('booking.html', form=form)
+@app.route('/book', methods=["POST"])
+def book():
+    if request.method == "POST" and current_user.is_authenticated: 
+        room_id = request.form.get("room_id")
+        num_people = request.form.get("num_people")
+        timeslot = request.form.get("timeslot")
+        date = request.form.get("date")
+        booking_records = Bookings.query.filter_by(rid=room_id, date=date, time_slot=timeslot).all()
+        if not booking_records:
+            booking = Bookings(rid=room_id, uid=current_user.id, date=date, num_people=num_people, time_slot=timeslot)
+            db.session.add(booking) 
+            db.session.commit()
+        else:
+            pass
+            # send a message to user saying there is a booking already
+    return redirect(url_for("index"))
+        
 
 
 # Run the flask server on the local network
 # Run the flask server on the local network
 # Run the flask server on the local network
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
