@@ -1,31 +1,10 @@
-import os
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_ngrok import run_with_ngrok 
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+from flask import render_template, url_for, flash, redirect, request, jsonify
+from flask_login import login_user, current_user, logout_user
+from cpabooking import app, db, ROOMS
+from cpabooking.forms import RegisterForm, LoginForm, BookingForm
+from cpabooking.models import User, Bookings
 from werkzeug.security import check_password_hash, generate_password_hash
-from forms import LoginForm, RegisterForm, BookingForm
-from flask_login import LoginManager, current_user, login_user, logout_user
 from datetime import datetime
-
-ROOMS = ['A101','A102','A103','A104','A105','A106','A107','A108','A109','A110',
-         'A201','A202','A203','A204','A205','A206','A207','A208','A209','A220']
-
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = "swanisacutiepatootie"
-
-run_with_ngrok(app)
-
-db = SQLAlchemy(app)
-login_manager = LoginManager(app)
-
-from models import User, Bookings
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -117,9 +96,25 @@ def book():
     else:
         flash("You need to login first.", category="warning")
     return redirect(url_for("index"))
-        
-# Run the flask server on the local network
-# Run the flask server on the local network
-# Run the flask server on the local network
-if __name__ == '__main__':
-    app.run(debug=True)
+
+
+@app.route('/getAvailableRooms', methods=["POST"])
+def getavailablerooms():
+    selected_date = datetime.strptime(request.get_json()[0]["selected_date"], '%d-%m-%Y')
+    print(selected_date)
+    # database queries here
+    # check each room if there are 3 bookings at the given date
+    
+    available_rooms = []
+    for room in ROOMS:
+        # select * from bookings
+        # where date = selected_date
+        no_bookings = Bookings.query.filter_by(rid=room, date=selected_date).count()  
+        print(no_bookings, room)
+        if no_bookings < 3:
+            available_rooms.append(room)
+
+    print(available_rooms)
+    
+    return jsonify(available_rooms)
+    
