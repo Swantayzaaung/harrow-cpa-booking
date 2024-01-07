@@ -1,3 +1,5 @@
+import {addAvailableRoomButtons} from "./script.js"
+
 const isLeapYear = (year) => {
     return (
         (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
@@ -82,8 +84,41 @@ const generateCalendar = (month, year) => {
                 day.classList.add("current-date");
             }
             
-            
         }
+	
+	// added by mat taylor (can delete when needed)
+        day.addEventListener("click", function() {
+            // remove the 'current-date' class to the div that it was previously on
+            let calender_days_disp = document.querySelector('.calendar-days');
+            console.log(calender_days_disp.children.length);
+            
+            for (let i=0; i<31; i++) {
+                let day_disp = calender_days_disp.children[i];
+                // console.log(day_disp);
+                day_disp.classList.remove('current-date');
+            }
+            // add the 'current-date' class to 'this'
+            this.classList.add('current-date');
+
+            // send ajax request to backend
+	    let selectedDate =  `${this.innerHTML}-${month+1}-${year}` 
+	    var server_data = [
+	    	{"selected_date" : selectedDate}
+ 	    ];
+ 	    $.ajax({
+   	        type: "POST",
+   	        url: "/getAvailableRooms",
+   	        data: JSON.stringify(server_data),
+     	        contentType: "application/json",
+   	        dataType: 'json',
+   	        success: function(result) {
+     	            console.log(result);
+		    addAvailableRoomButtons(result);
+   	        }
+	    });
+
+        });
+
         calendar_days.appendChild(day);
     }
 };
