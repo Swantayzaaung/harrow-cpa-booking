@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user
-from cpabooking import app, db, ROOMS
-from cpabooking.forms import RegisterForm, LoginForm, BookingForm
-from cpabooking.models import User, Bookings
+from . import app, db, ROOMS
+from .forms import RegisterForm, LoginForm, BookingForm
+from .models import User, Bookings
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 
@@ -71,8 +71,8 @@ def logout():
     flash('Successfully logged out', category='success')
     return redirect(url_for("index"))
 
-@app.route('/layoutt')
-def layoutt():
+@app.route('/layout')
+def layout():
     return render_template("layout.html")
 
 @app.route('/book', methods=["POST"])
@@ -83,16 +83,19 @@ def book():
         timeslot = request.form.get("timeslot")
         date = datetime.strptime(request.form.get("date"), '%d-%m-%Y')
         booking_records = Bookings.query.filter_by(rid=room_id, date=date, time_slot=timeslot).first()
-        print(booking_records)
+        print("not booking records is: ", not booking_records)
         if not booking_records:
-            booking = Bookings(rid=room_id, uid=current_user.id, date=date, num_people=num_people, time_slot=timeslot)
-            print(booking)
-            db.session.add(booking) 
-            db.session.commit()
-            flash(f"Successfully booked Room {room_id} at time slot {timeslot} on {date}", category="success")
+            if len(current_user.bookings) <= 3:
+                booking = Bookings(rid=room_id, uid=current_user.id, date=date, num_people=num_people, time_slot=timeslot)
+                print(booking)
+                db.session.add(booking) 
+                db.session.commit()
+                flash(f"Successfully booked Room {room_id} at time slot {timeslot} on {date}", category="success")
+            else:
+                flash("Booking unsuccessful. There cannot be more than 3 people.")
         else:
             # send a message to user saying there is a booking already
-            flash("There is already a booking.", category="danger")
+            flash("Booking unsuccessful. The room is already booked", category="danger")
     else:
         flash("You need to login first.", category="warning")
     return redirect(url_for("index"))
@@ -101,7 +104,7 @@ def book():
 @app.route('/getAvailableRooms', methods=["POST"])
 def getavailablerooms():
     selected_date = datetime.strptime(request.get_json()[0]["selected_date"], '%d-%m-%Y')
-    print(selected_date)
+    # print(selected_date)
     # database queries here
     # check each room if there are 3 bookings at the given date
     
@@ -110,11 +113,11 @@ def getavailablerooms():
         # select * from bookings
         # where date = selected_date
         no_bookings = Bookings.query.filter_by(rid=room, date=selected_date).count()  
-        print(no_bookings, room)
+        # print(no_bookings, room)
         if no_bookings < 3:
             available_rooms.append(room)
 
-    print(available_rooms)
+    # print(available_rooms)
     
     return jsonify(available_rooms)
     

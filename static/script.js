@@ -1,3 +1,4 @@
+const date = new Date();
 document.querySelectorAll('.room-btn').forEach(roomBtn => {
     roomBtn.dataset.room
 });
@@ -15,7 +16,7 @@ document.querySelectorAll('.room-btn').forEach(roomBtn => {
 
         // insert date
         let date_disp = document.getElementById("date"); // get the date from the calendar somehow
-        date_disp.setAttribute('value', "14-12-2023");
+        date_disp.setAttribute('value', `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`);
         date_disp.setAttribute('readonly', true);
     });
 
@@ -62,7 +63,7 @@ document.querySelectorAll('.room-btn').forEach(roomBtn => {
 
 	        // insert date
         	let date_disp = document.getElementById("date"); // get the date from the calendar somehow
-        	date_disp.setAttribute('value', "14-12-2023");
+        	date_disp.setAttribute('value', `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`);
         	date_disp.setAttribute('readonly', true);
 	    });
 

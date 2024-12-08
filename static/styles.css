@@ -47,14 +47,10 @@
 }
 
 .room-btn {
-    width: 40%
+    width: 5rem;
 }
 
 @media screen and (min-width: 600px) {
-    .booking-item {
-        width: 40%;
-        margin: 1rem;
-    } 
     .reg-form {
         width: 50%;
     }
