@@ -22,5 +22,6 @@ app.config['SECRET_KEY'] = "swanisacutiepatootie"
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
+from cpabooking import routes
 
 

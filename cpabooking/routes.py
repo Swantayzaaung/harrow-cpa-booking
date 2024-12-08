@@ -120,4 +120,3 @@ def getavailablerooms():
     # print(available_rooms)
     
     return jsonify(available_rooms)
-    
